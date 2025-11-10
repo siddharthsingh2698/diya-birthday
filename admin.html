@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Diya 🎉</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #89f7fe, #d4a1ff);
+    overflow-x: hidden;
+    color: #fff;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin-top: 60px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    animation: glow 2s infinite alternate;
+    color: #fff;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #c79fff, 0 0 20px #a471ff; }
+    to { text-shadow: 0 0 25px #e7d3ff, 0 0 35px #b981ff; }
+  }
+
+  .message {
+    font-size: 1.3em;
+    margin: 20px auto;
+    width: 85%;
+    color: #f8f4ff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  }
+
+  /* Portrait image fix */
+  .slideshow {
+    margin: 30px auto;
+    width: 85%;
+    max-width: 400px;
+    height: 600px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 35px rgba(171, 119, 255, 0.6);
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slideshow img {
+    width: auto;
+    height: 100%;
+    object-fit: contain; /* Show full photo */
+    position: absolute;
+    opacity: 0;
+    transition: opacity 2s;
+    border-radius: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .slideshow img.active {
+    opacity: 1;
+  }
+
+  .music-btn {
+    background: linear-gradient(135deg, #9a6eff, #ff82e6);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1em;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 5px 15px rgba(153, 71, 255, 0.3);
+  }
+
+  .music-btn:hover {
+    background: linear-gradient(135deg, #ff82e6, #9a6eff);
+    transform: scale(1.05);
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  footer {
+    margin-top: 40px;
+    font-size: 1em;
+    color: #f2e9ff;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎂 Happy Birthday CS Anchal💜</h1>
+<p class="message">Wishing you a sky full of dreams, a heart full of joy, and a day filled with endless smiles. You’re truly amazing! 💖</p>
+
+<div class="slideshow">
+  <img src="1.jpg" class="active">
+  <img src="2.jpg">
+  <img src="5.jpg">
+</div>
+
+<button class="music-btn" id="musicBtn">🎵 Play Music</button>
+
+<footer></footer>
+
+<canvas id="hearts"></canvas>
+
+<audio id="bgMusic" loop>
+  <source src="miamor.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // 🌸 Image slideshow
+  let slides = document.querySelectorAll(".slideshow img");
+  let index = 0;
+  setInterval(() => {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }, 3000);
+
+  // 🎵 Music button
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("musicBtn");
+  btn.onclick = () => {
+    music.play();
+    btn.style.display = "none";
+  };
+
+  // 💖 Floating hearts animation
+  const canvas = document.getElementById("hearts");
+  const ctx = canvas.getContext("2d");
+  let hearts = [];
+  let W = canvas.width = window.innerWidth;
+  let H = canvas.height = window.innerHeight;
+
+  window.addEventListener("resize", () => {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  });
+
+  function Heart() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 5 + 2;
+    this.speed = Math.random() * 1 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.5;
+    this.color = "rgba(255, 182, 255," + this.alpha + ")";
+  }
+
+  function drawHeart(x, y, size) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+    ctx.bezierCurveTo(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+    ctx.fill();
+  }
+
+  function createHearts() {
+    for (let i = 0; i < 50; i++) hearts.push(new Heart());
+  }
+
+  function animateHearts() {
+    ctx.clearRect(0, 0, W, H);
+    hearts.forEach(h => {
+      ctx.fillStyle = h.color;
+      drawHeart(h.x, h.y, h.size);
+      h.y -= h.speed;
+      if (h.y < -10) {
+        h.y = H + 10;
+        h.x = Math.random() * W;
+      }
+    });
+    requestAnimationFrame(animateHearts);
+  }
+
+  createHearts();
+  animateHearts();
+</script>
+
+</body>
+</html>
